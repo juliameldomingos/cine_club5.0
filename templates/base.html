@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block titulo %}Cine Club{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{{ url_for('static', filename='estilo.css') }}" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-cinema">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand" href="{{ url_for('dashboard') }}">Cine Club</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Usuários</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('listar_usuarios') }}">Listagem de Usuários</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('cadastrar_usuario') }}">Cadastro de Usuários</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Filmes</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('listar_filmes') }}">Listagem de Filmes</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('cadastrar_filme') }}">Cadastro de Filmes</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Sessões</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('listar_sessoes') }}">Listagem de Sessões</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('cadastrar_sessao') }}">Cadastro de Sessões</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Perfis</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('listar_perfis') }}">Listagem de Perfis</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('inserir_perfil') }}">Cadastro de Perfis</a></li>
+            </ul>
+          </li>
+        </ul>
+        <form class="d-flex me-2">
+          <input class="form-control" type="search" placeholder="Procurar">
+        </form>
+        <a href="{{ url_for('login') }}" class="btn btn-outline-light">SAIR</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container flex-grow-1 py-5">
+    {% for tipo, mensagem in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ tipo }} py-2" role="alert">{{ mensagem }}</div>
+    {% endfor %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="rodape">
+    <p>Projeto desenvolvido por: Juliamel e Mariana.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

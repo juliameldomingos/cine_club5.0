@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="titulo-pagina">Cadastro de Sessões</h1>
+
+<div class="painel">
+  <form>
+
+    <div class="row mb-3">
+      <div class="col-md-8">
+        <label for="filme" class="form-label">Filme:</label>
+        <select class="form-select" id="filme" name="filme">
+          <option value="">-- ESCOLHA --</option>
+          <option>O Poderoso Chefão</option>
+          <option>Matrix</option>
+          <option>Procurando Nemo</option>
+          <option>Harry Potter e a Pedra Filosofal</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="sala" class="form-label">Sala:</label>
+        <select class="form-select" id="sala" name="sala">
+          <option value="">-- ESCOLHA --</option>
+          <option>Sala 1 - Standard</option>
+          <option>Sala 2 - IMAX</option>
+          <option>Sala 3 - VIP</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <label for="data" class="form-label">Data da Sessão:</label>
+        <input type="date" class="form-control" id="data" name="data">
+      </div>
+      <div class="col-md-4">
+        <label for="horario" class="form-label">Horário:</label>
+        <input type="time" class="form-control" id="horario" name="horario">
+      </div>
+      <div class="col-md-4">
+        <label for="valor" class="form-label">Valor do Ingresso (R$):</label>
+        <input type="text" class="form-control" id="valor" name="valor" placeholder="0,00">
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center">
+      <a href="{{ url_for('listar_sessoes') }}" class="text-decoration-none ms-3">Voltar</a>
+      <div>
+        <button type="reset" class="btn btn-secondary me-2">Limpar</button>
+        <button type="submit" class="btn btn-success">Salvar</button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

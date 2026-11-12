@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="titulo-pagina">Erro no servidor</h1>
+<p>Algo deu errado. Tente novamente em instantes.</p>
+<a href="{{ url_for('dashboard') }}" class="btn btn-success">Voltar para a Home</a>
+{% endblock %}
