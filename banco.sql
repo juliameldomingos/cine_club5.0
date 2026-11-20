@@ -1,4 +1,4 @@
--- DROP DATABASE IF EXISTS cineclub;   -- tire o "--" só se quiser apagar tudo e recomeçar do zero
+-- DROP DATABASE IF EXISTS gestao;   -- tire o "--" só se quiser apagar tudo e recomeçar do zero
 
 CREATE DATABASE IF NOT EXISTS cineclub
     CHARACTER SET utf8mb4
@@ -12,7 +12,8 @@ CREATE TABLE IF NOT EXISTS perfis (
     nome          VARCHAR(100) NOT NULL UNIQUE,
     descricao     VARCHAR(255),
     criado_em     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deletado_em   DATETIME NULL                         -- soft-delete (Capítulo 13.1)
 );
 
 CREATE TABLE IF NOT EXISTS usuarios (
@@ -32,36 +33,22 @@ CREATE TABLE IF NOT EXISTS usuarios (
     estado          CHAR(2),
     criado_em       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     atualizado_em   TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deletado_em     DATETIME NULL,                      -- soft-delete (Capítulo 13.1)
     CONSTRAINT fk_usuarios_perfis
         FOREIGN KEY (perfil_id) REFERENCES perfis (id_perfil)
         ON DELETE RESTRICT
         ON UPDATE CASCADE
 );
 
--- Tema do projeto: filmes e sessões (no lugar de produtos).
-CREATE TABLE IF NOT EXISTS filmes (
-    id_filme      BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    titulo        VARCHAR(255) NOT NULL,
-    diretor       VARCHAR(255) NOT NULL,
-    genero        VARCHAR(100) NOT NULL,
-    ano           SMALLINT UNSIGNED NOT NULL,
-    duracao       SMALLINT UNSIGNED NOT NULL,   -- em minutos
+CREATE TABLE IF NOT EXISTS produtos (
+    id_produto    BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nome          VARCHAR(255) NOT NULL,
+    descricao     TEXT,
+    categoria     VARCHAR(100),
+    preco         DECIMAL(10,2) NOT NULL,
+    estoque       INT UNSIGNED NOT NULL DEFAULT 0,
+    foto          VARCHAR(255),                 -- caminho do arquivo gravado em disco
+    ativo         TINYINT(1) NOT NULL DEFAULT 1,
     criado_em     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
--- filmes vem antes de sessoes, porque sessoes aponta para ele (chave estrangeira).
-CREATE TABLE IF NOT EXISTS sessoes (
-    id_sessao     BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    filme_id      BIGINT UNSIGNED NOT NULL,
-    sala          VARCHAR(50) NOT NULL,
-    data_sessao   DATE NOT NULL,
-    horario       TIME NOT NULL,
-    valor         DECIMAL(10,2) NOT NULL,
-    criado_em     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    atualizado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT fk_sessoes_filmes
-        FOREIGN KEY (filme_id) REFERENCES filmes (id_filme)
-        ON DELETE RESTRICT
-        ON UPDATE CASCADE
 );
